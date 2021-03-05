@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import CommentCreate from './CommentCreate';
+
 // component making request to our post and list all posts ever been created
 export default () => {
   const [posts, setPosts] = useState({}); // posts expect an object
@@ -24,6 +26,7 @@ export default () => {
       >
         <div className="card-body">
           <h3>{post.title}</h3>
+          <CommentCreate postId={post.id} />
         </div>
       </div>
     );
