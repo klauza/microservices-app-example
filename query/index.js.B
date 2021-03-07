@@ -1,27 +1,13 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const app = express();
-app.use(express.json());
+app.use(bodyParser.json());
 app.use(cors());
-// query service receives events PostCreated and CommentCreated
 
 const posts = {};
-// example of 'posts'
-// posts === {
-// 'f43f32': {
-//   id: 'f43f32',
-//   title: 'post title',
-//   comments: [{id: 'xx', content: 'comm'}, {id: 'yy', content: 'comm2'}]
-// },
-// 'f43f33': {
-//   id: 'f43f33',
-//   title: 'post title',
-//   comments: [{id: 'xx', content: 'comm'}, {id: 'yy', content: 'comm2'}]
-// }
-// }
 
-// route handlers
 app.get('/posts', (req, res) => {
   res.send(posts);
 });
@@ -60,5 +46,5 @@ app.post('/events', (req, res) => {
 });
 
 app.listen(4002, () => {
-  console.log('Listening 4002');
+  console.log('Listening on 4002');
 });
