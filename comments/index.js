@@ -26,7 +26,7 @@ app.post('/posts/:id/comments', async (req, res) => {
   // if undefined, give an empty array
   const comments = commentsByPostId[req.params.id] || [];
 
-  comments.push({ id: commentId, content });
+  comments.push({ id: commentId, content, status: 'pending' });
 
   commentsByPostId[req.params.id] = comments;
 
@@ -36,14 +36,41 @@ app.post('/posts/:id/comments', async (req, res) => {
       id: commentId,
       content,
       postId: req.params.id,
+      status: 'pending',
     },
   });
 
   res.status(201).send(comments);
 });
 
-app.post('/events', (req, res) => {
+app.post('/events', async (req, res) => {
   console.log('Event received', req.body.type);
+
+  const { type, data } = req.body;
+
+  // find an propriate comment stored in commentsByPostId
+  // & UPDATE STATUS
+  if (type === 'CommentModerated') {
+    const { postId, id, status, content } = data;
+
+    const comments = commentsByPostId[postId];
+    // iterate through comments and find a comment we want to update
+    const comment = comments.find((comment) => {
+      return comment.id === id;
+    });
+    // and update the status that has been pulled out of data [const { postId, id, status } = data;]
+    comment.status = status;
+
+    await axios.post('http://localhost:4005/events', {
+      type: 'CommentUpdated',
+      data: {
+        id,
+        status,
+        postId,
+        content,
+      },
+    });
+  }
 
   res.send({});
 });
