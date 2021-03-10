@@ -68,7 +68,7 @@ app.listen(4002, async () => {
   console.log('Listening 4002');
 
   // for syncing - to make request to event bus ot try to get listing all events
-  const res = await axios.get('http://localhost:4005/events');
+  const res = await axios.get('http://event-bus-srv:4005/events');
 
   // iteration through all events ever occured
   for (let event of res.data) {
