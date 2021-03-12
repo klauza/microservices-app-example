@@ -9,7 +9,7 @@ export default ({ postId }) => {
     event.preventDefault();
     // we use content and postId to post a comment
 
-    await axios.post(`http://localhost:4001/posts/${postId}/comments`, {
+    await axios.post(`http://posts.com/posts/${postId}/comments`, {
       content,
     });
 
